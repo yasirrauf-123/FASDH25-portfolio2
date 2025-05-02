@@ -37,12 +37,12 @@ def write_tsv(data, column_list, path):
 
 
 # define which folder to use:
-folder = "articles"  
+folder = "../articles"  
 
 # define the patterns we want to search:
 
 # load the gazetteer from the tsv file:
-path = "gazetteers/geonames_gaza_selection.tsv"
+path = "../gazetteers/geonames_gaza_selection.tsv"
 with open(path, encoding="utf-8") as file:
     data = file.read()
 
