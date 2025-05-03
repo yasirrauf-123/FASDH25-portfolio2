@@ -1,105 +1,116 @@
-'''This is your starting script for today's Python class.
+"""
+This is the final version of the regex script for our Digital Humanities Mini-Project 2.
 
-This script contains the code we wrote last week
-to count the number of times each place in Gaza
-is mentioned in our corpus.
+The script does the following:
+- Loads a gazetteer of place names with multiple spelling variants.
+- Reads through many news article files about the Gaza war.
+- Finds how often each place name is mentioned in the text of these articles.
+- Only includes articles that were written during the current war (after October 2023).
+- Counts how often each place is mentioned each month.
+- Saves this information in a TSV file called "regex_counts.tsv".
 
-Now, we want to store this count into a tsv file.
+"""
 
-I have written a function (write csv) to do this -
-but it has some mistakes in it.
+import re         # for finding place names in text using patterns (regex)
+import os         # for reading all the files in the articles folder
+import pandas as pd  # to save our results in a structured table format
 
-Please fix the mistakes and call the function
-to write the 
+# Set the paths to the gazetteer and the articles folder
+gazetteer_path = "../gazetteers/geonames_gaza_selection.tsv"
+articles_folder = "../articles"
 
-'''
-import re
-import os
-import pandas as pd
-
-
-war_start_date = "2023-10-07"
-def write_tsv(data, column_list, path):
-    """This function converts a dictionary to a tsv file.
-
-    It takes three arguments:
-        data (dict): the dictionary
-        column_list (list): a list of column names
-        path (str): the path to which the tsv file will be written
-    """
-   
-    # turn the dictionary into a list of (key, value) tuples (this is correct):
-    
-    # create a dataframe from the items list (this is correct):
-    df = pd.DataFrame(data, columns=column_list)
-    # write the dataframe to tsv:
-    df.to_csv(path, sep="\t", index=False)
-
-
-# define which folder to use:
-folder = "../articles"  
-
-# define the patterns we want to search:
-
-# load the gazetteer from the tsv file:
-path = "../gazetteers/geonames_gaza_selection.tsv"
-with open(path, encoding="utf-8") as file:
+# Load the gazetteer
+with open(gazetteer_path, encoding="utf-8") as file:
     data = file.read()
 
-rows = data.strip().split("\n")
-
-# build a dictionary of patterns from the place names in the first column:
-patterns = {}
+# Create two dictionaries:
+# 1. frequency_counter to count total mentions of each place name
+# 2. mentions_per_month to count mentions per month
+frequency_counter = {}
 mentions_per_month = {}
-for row in rows[1:]:
-    if not row.strip():
-        continue  
+
+# Extract all names for each place from the gazetteer
+rows = data.strip().split("\n")
+header = rows[0].split("\t")  # column names
+rows = rows[1:]  # skip header
+
+# This will store regex patterns as keys and place names as values
+pattern_to_place = {}
+
+for row in rows:
     columns = row.split("\t")
-    asciiname = columns[0].strip()
+    asciiname = columns[0]
+    alternatenames = columns[3] if len(columns) > 3 else ""  # Get alternative names if available
 
-    alt_names = []
-    for col in columns:
-        alt_names.extend(col.strip().split(","))
+    # Combine the asciiname and alternate names
+    all_names = [asciiname] + alternatenames.split(",")
 
-    alt_names = list(set(name.strip() for name in alt_names if name.strip()))
-    if not alt_names:
+    # Remove duplicates and empty strings
+    all_names = list(set([name.strip() for name in all_names if name.strip()]))
+
+    # Build a simple regex that matches any of these names using '|'
+    # Note: this is a basic method to improve recall
+    regex_pattern = "|".join(re.escape(name) for name in all_names)
+
+    # Save the regex and the asciiname (we'll use asciiname as the display name)
+    pattern_to_place[regex_pattern] = asciiname
+
+    # Initialize the counters
+    frequency_counter[asciiname] = 0
+    mentions_per_month[asciiname] = {}
+
+# Go through all the article files
+for filename in os.listdir(articles_folder):
+
+    
+    # Get the date from the filename (format: 2023-11-05_xyz.txt → "2023-11")
+    file_date = filename[:10]  # YYYY-MM-DD
+    file_month = file_date[:7]  # YYYY-MM
+
+    # Skip files from before the current war (before 2023-10-07)
+    if file_date < "2023-10-07":
         continue
 
-    regex_pattern = "|".join(re.escape(name) for name in alt_names)
-    patterns[asciiname] = regex_pattern
+    # Open and read the file
+    file_path = os.path.join(articles_folder, filename)
+    with open(file_path, encoding="utf-8") as f:
+        text = f.read()
+
+    # Step 4: Search for place names using all the regex patterns
+    for regex, place in pattern_to_place.items():
+        matches = re.findall(rf"\b(?:{regex})\b", text, flags=re.IGNORECASE)
+        count = len(matches)
+
+        # Update total frequency
+        frequency_counter[place] += count
+
+        # Update monthly frequency
+        if file_month not in mentions_per_month[place]:
+            mentions_per_month[place][file_month] = 0
+        mentions_per_month[place][file_month] += count
 
 
-# count the number of times each pattern is found in the entire folder:
-for filename in os.listdir(folder):
-     article_date = filename.split("_")[0]
-     if article_date < war_start_date:
-        continue
-     file_path = os.path.join(folder, filename)
-     with open(file_path, encoding="utf-8") as file:
-        text = file.read()
-     for name, regex_pattern in patterns.items():
-        matches = re.findall(regex_pattern, text, flags=re.IGNORECASE)
-        n_matches = len(matches)
-        if n_matches == 0:
-            continue
-        month = article_date[:7]  
-        if name not in mentions_per_month:
-            mentions_per_month[name] = {}
-        if month not in mentions_per_month[name]:
-            mentions_per_month[name][month] = 0
-        mentions_per_month[name][month] += n_matches
+# Print the total count and monthly breakdown of each place
+for place in mentions_per_month:
+    print("found", place, "times in total:", sum(mentions_per_month[place].values()))
 
-# print the frequency of each pattern:
-for place, months in mentions_per_month.items():
-    for month, count in months.items():
-        if count >= 1:
-            print(f"Found {place} {count} times in {month}")
+    # Print how many times it was mentioned in each month
+    for month in mentions_per_month[place]:
+        print("   in", month, ":", mentions_per_month[place][month], "times")
 
-# call the function to write your tsv file:
-tsv_data = []
-for place, months in mentions_per_month.items():
-    for month, count in months.items():
-        tsv_data.append([place, month, count])
-write_tsv(tsv_data, ["placename", "month", "count"], "regex_counts.tsv")
+# Write results to a TSV file called "regex_counts.tsv"
+# This file will have 3 columns: placename, month, count
+rows_to_write = []
 
-        
+for place, month_data in mentions_per_month.items():
+    for month, count in month_data.items():
+        if count > 0:
+            rows_to_write.append((place, month, count))
+
+# Convert to DataFrame and save
+df = pd.DataFrame(rows_to_write, columns=["placename", "month", "count"])
+df.to_csv("regex_counts.tsv", sep="\t", index=False)
+
+
+
+
