@@ -1,93 +1,4 @@
 placename	month	count
-Jabalya	2024-04	1
-Jabalia	2023-10	33
-Jabalia	2023-11	102
-Jabalia	2023-12	44
-Jabalia	2024-01	12
-Jabalia	2024-02	7
-Jabalia	2024-03	8
-Jabalia	2024-04	2
-Khan Younis	2023-10	74
-Khan Younis	2023-11	132
-Khan Younis	2023-12	173
-Khan Younis	2024-01	73
-Khan Younis	2024-02	63
-Khan Younis	2024-03	40
-Khan Younis	2024-04	25
-Rafah	2023-10	182
-Rafah	2023-11	150
-Rafah	2023-12	201
-Rafah	2024-01	41
-Rafah	2024-02	497
-Rafah	2024-03	253
-Rafah	2024-04	81
-Nuseirat	2023-10	22
-Nuseirat	2023-11	16
-Nuseirat	2023-12	26
-Nuseirat	2024-01	11
-Nuseirat	2024-02	6
-Nuseirat	2024-03	9
-Nuseirat	2024-04	8
-Bureij	2023-10	3
-Bureij	2023-11	15
-Bureij	2023-12	17
-Bureij	2024-01	5
-Bureij	2024-02	2
-Bureij	2024-03	5
-Al Qararah	2024-03	1
-Maghazi	2023-10	15
-Maghazi	2023-11	28
-Maghazi	2023-12	49
-Maghazi	2024-01	9
-Maghazi	2024-02	2
-Maghazi	2024-03	3
-Deir El-Balah	2023-10	38
-Deir El-Balah	2023-11	51
-Deir El-Balah	2023-12	45
-Deir El-Balah	2024-01	19
-Deir El-Balah	2024-02	31
-Deir El-Balah	2024-03	30
-Deir El-Balah	2024-04	12
-Al Mawasi	2024-03	1
-Al-Shifa Hospital	2023-10	31
-Al-Shifa Hospital	2023-11	242
-Al-Shifa Hospital	2023-12	23
-Al-Shifa Hospital	2024-01	3
-Al-Shifa Hospital	2024-02	15
-Al-Shifa Hospital	2024-03	31
-Al-Shifa Hospital	2024-04	13
-Az-Zawayda	2023-10	1
-Az-Zawayda	2023-12	1
-Az-Zawayda	2024-02	1
-Az-Zawayda	2024-04	1
-Shokat as-Sufi	2023-10	1
-Al-Mughraqa	2023-10	1
-Al-Mughraqa	2024-01	1
-Al Amal	2024-03	1
-Remal	2023-11	1
-Remal	2023-12	4
-Remal	2024-03	3
-Remal	2024-04	2
-Abu Sittah	2023-10	1
-Abu Sittah	2023-12	4
-Abu Sittah	2024-04	4
-Hamadah	2024-02	1
-Tunis	2023-10	3
-Tunis	2023-11	4
-Tunis	2023-12	1
-Qizan	2023-10	1
-Hijazi	2023-10	2
-Hijazi	2023-11	2
-Hijazi	2023-12	1
-Hijazi	2024-01	1
-Hijazi	2024-04	2
-Al-Azhar University	2023-10	2
-Al-Azhar University	2023-11	1
-Al-Azhar University	2023-12	2
-Al-Azhar University	2024-01	1
-Al-Aqsa University	2023-10	1
-Al-Aqsa University	2024-01	2
-Al-Aqsa University	2024-02	2
 Gaza	2023-10	4168
 Gaza	2023-11	4526
 Gaza	2023-12	2863
@@ -95,13 +6,6 @@ Gaza	2024-01	1956
 Gaza	2024-02	1882
 Gaza	2024-03	2197
 Gaza	2024-04	993
-Gaza Strip	2023-10	692
-Gaza Strip	2023-11	598
-Gaza Strip	2023-12	284
-Gaza Strip	2024-01	164
-Gaza Strip	2024-02	178
-Gaza Strip	2024-03	150
-Gaza Strip	2024-04	65
 Gaza City	2023-10	207
 Gaza City	2023-11	193
 Gaza City	2023-12	75
@@ -109,3 +13,99 @@ Gaza City	2024-01	35
 Gaza City	2024-02	63
 Gaza City	2024-03	82
 Gaza City	2024-04	17
+Gaza Strip	2023-10	692
+Gaza Strip	2023-11	598
+Gaza Strip	2023-12	284
+Gaza Strip	2024-01	164
+Gaza Strip	2024-02	178
+Gaza Strip	2024-03	150
+Gaza Strip	2024-04	65
+Rafah	2023-10	182
+Rafah	2023-11	150
+Rafah	2023-12	201
+Rafah	2024-01	41
+Rafah	2024-02	497
+Rafah	2024-03	253
+Rafah	2024-04	81
+Jabalia	2023-10	33
+Jabalia	2023-11	102
+Jabalia	2023-12	44
+Jabalia	2024-01	12
+Jabalia	2024-02	7
+Jabalia	2024-03	8
+Jabalia	2024-04	2
+Al-Shifa Hospital	2023-10	31
+Al-Shifa Hospital	2023-11	242
+Al-Shifa Hospital	2023-12	23
+Al-Shifa Hospital	2024-01	3
+Al-Shifa Hospital	2024-02	15
+Al-Shifa Hospital	2024-03	31
+Al-Shifa Hospital	2024-04	13
+Khan Younis	2023-10	74
+Khan Younis	2023-11	132
+Khan Younis	2023-12	173
+Khan Younis	2024-01	73
+Khan Younis	2024-02	63
+Khan Younis	2024-03	40
+Khan Younis	2024-04	25
+Tunis	2023-10	3
+Tunis	2023-11	4
+Tunis	2023-12	1
+Bureij	2023-10	3
+Bureij	2023-11	15
+Bureij	2023-12	17
+Bureij	2024-01	5
+Bureij	2024-02	2
+Bureij	2024-03	5
+Deir El-Balah	2023-10	38
+Deir El-Balah	2023-11	51
+Deir El-Balah	2023-12	45
+Deir El-Balah	2024-01	19
+Deir El-Balah	2024-02	31
+Deir El-Balah	2024-03	30
+Deir El-Balah	2024-04	12
+Nuseirat	2023-10	22
+Nuseirat	2023-11	16
+Nuseirat	2023-12	26
+Nuseirat	2024-01	11
+Nuseirat	2024-02	6
+Nuseirat	2024-03	9
+Nuseirat	2024-04	8
+Maghazi	2023-10	15
+Maghazi	2023-11	28
+Maghazi	2023-12	49
+Maghazi	2024-01	9
+Maghazi	2024-02	2
+Maghazi	2024-03	3
+Abu Sittah	2023-10	1
+Abu Sittah	2023-12	4
+Abu Sittah	2024-04	4
+Hijazi	2023-10	2
+Hijazi	2023-11	2
+Hijazi	2023-12	1
+Hijazi	2024-01	1
+Hijazi	2024-04	2
+Az-Zawayda	2023-10	1
+Az-Zawayda	2023-12	1
+Az-Zawayda	2024-02	1
+Az-Zawayda	2024-04	1
+Shokat as-Sufi	2023-10	1
+Al-Mughraqa	2023-10	1
+Al-Mughraqa	2024-01	1
+Qizan	2023-10	1
+Al-Azhar University	2023-10	2
+Al-Azhar University	2023-11	1
+Al-Azhar University	2023-12	2
+Al-Azhar University	2024-01	1
+Al-Aqsa University	2023-10	1
+Al-Aqsa University	2024-01	2
+Al-Aqsa University	2024-02	2
+Remal	2023-11	1
+Remal	2023-12	4
+Remal	2024-03	3
+Remal	2024-04	2
+Hamadah	2024-02	1
+Al Qararah	2024-03	1
+Al Mawasi	2024-03	1
+Al Amal	2024-03	1
+Jabalya	2024-04	1
