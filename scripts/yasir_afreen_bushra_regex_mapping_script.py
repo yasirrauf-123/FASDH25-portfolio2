@@ -5,9 +5,7 @@ import plotly.express as px
 counts = pd.read_csv("../scripts/regex_counts.tsv", sep="\t")
 coords = pd.read_csv("../gazetteers/geonames_gaza_selection.tsv", sep="\t")
 
-# Clean column names
-#counts.columns = counts.columns.str.strip()
-#coords.columns = coords.columns.str.strip()
+
 
 # Rename for consistency
 coords = coords.rename(columns={
