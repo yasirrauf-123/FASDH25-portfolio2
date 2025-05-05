@@ -11,8 +11,8 @@ counts = pd.read_csv("../scripts/ner_counts.tsv", sep="\t")
 coords = pd.read_csv("../scripts/NER_gazetteer.tsv", sep="\t")
 
 # Clean column names (remove any leading/trailing whitespace)
-counts.columns = counts.columns.str.strip()
-coords.columns = coords.columns.str.strip()
+#counts.columns = counts.columns.str.strip()
+#coords.columns = coords.columns.str.strip()
 
 # Rename columns in coords to match counts and plotting requirements
 coords = coords.rename(columns={
@@ -29,13 +29,13 @@ data["count"] = pd.to_numeric(data["count"], errors="coerce")
 data = data.dropna(subset=["count", "latitude", "longitude"])
 
 # Plot map
-fig = px.scatter_geo(
+fig = px.scatter_map(
     data,
     lat="latitude",
     lon="longitude",
     hover_name="placename",
     size="count",
-    projection="natural earth",
+    color="count",
     title="NER-extracted Place Names (Jan 2024)",
 )
 
