@@ -10,9 +10,7 @@ import plotly.express as px
 counts = pd.read_csv("../scripts/ner_counts.tsv", sep="\t")
 coords = pd.read_csv("../scripts/NER_gazetteer.tsv", sep="\t")
 
-# Clean column names (remove any leading/trailing whitespace)
-#counts.columns = counts.columns.str.strip()
-#coords.columns = coords.columns.str.strip()
+
 
 # Rename columns in coords to match counts and plotting requirements
 coords = coords.rename(columns={
