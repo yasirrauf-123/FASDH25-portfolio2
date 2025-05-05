@@ -1,124 +1,126 @@
 """
-This script is written as a part of our Digital Humanities course Mini Project No.2
-where we explore how to visualize the places that are mentioned in news articles
-over time.
-We are using computational tools to find toponyms (= place names) in each article,
-put them on a map, and visualize how the geographic scope of the news articles
-shifts over time.
-In this script we are using regular expressions and a gazetter to extract place names
-from a collection of news articles about the war in Gaza, collected from the Aljzeera
-English website by Inacio Vieira. The full collection contains 4341 different articles,
-and although the title of the dataset suggests that the dataset covers the Gaza War
-since November 2023, the dataset also contains earlier articles but in the script we are
-using a condition to skips the articles that were written before the start of the
-current war because we want to only work with the articles after the war to visualize how
-the geographic scope of the news articles have shifted after war in Gaza started.
+This script is part of our Digital Humanities course Mini Project No. 2, where we explore how to visualize
+the places mentioned in news articles over time. Using computational tools, we extract toponyms (place names)
+from each article, map them, and observe how the geographic focus of the news shifts. In this script, we apply regular
+expressions and a gazetteer to a dataset of 4341 Al Jazeera English articles about the Gaza war, collected by
+Inacio Vieira. Although the dataset includes older articles, we use a condition to skip those published before
+the current war (starting November 2023), as our focus is on mapping how the geographic focus of news articles has shifted
+since the start of the ongoing conflict.
 """
-# Importing regex libary to find place names in the text using the regular expressions
+
+# Importing the regex library to extract place names from text using regular expressions
 import re
-# Importing os to interact with the operating system (files and directorie we want to work with)
+# Importing os to interact with the operating system (e.g., accessing files and directories)
 import os
-# Importing pandas as pd to save our results in a structured table format (tsv)
+# Importing pandas as pd to store our results in a structured table format (TSV)
 import pandas as pd
 
-# Set the paths to the gazetteer and articles folder
-gazetteer_path = "../gazetteers/geonames_gaza_selection.tsv"  # Path to the gazetteer file
-articles_folder = "../articles"  # Path to the folder containing news articles
+# Setting the path to the gazetteer file, which contains place names we want to match
+gazetteer_path = "../gazetteers/geonames_gaza_selection.tsv"
 
-# Reading the gazetteer file which contains place names to extract from articles
+# Setting the path to the folder containing the news articles to be processed
+articles_folder = "../articles"
+
+# Opening the gazetteer file that contains place names we want to extract from the articles
 with open(gazetteer_path, encoding="utf-8") as file:
-    data = file.read()  # Read the entire gazetteer file content
+    data = file.read()  # Reading the entire content of the gazetteer file
 
-# code below this upto patterns[ascii_name] = all_names have been generated with the help of ChatGPT(ChatGPT Solution 1 in AI Documentation)
-# Creating a dictionary to store place name patterns for regex matching
+# Code from below up to line 66 has been generated with the help of ChatGPT (ChatGPT Solution No.1 in AI Documentation Document)
+# Creating Dictionary to store regex patterns for each place (keyed by ascii name)
 patterns = {}
-
-# Split the gazetteer data into rows (one for each place name)
-rows = data.strip().split("\n")
-
-# The first row usually contains column names: ascii, name, alternate names
+# Split the gazetteer file into rows using newline as the separator
+rows = data.split("\n")
+# Extract column indices from the header row to correctly access columns by name
 header = rows[0].split("\t")
-
-# Process each row to extract the place names and alternate names
-for row in rows[1:]:
-    columns = row.split("\t")
-    
-    # Skip rows with missing information
-    if len(columns) < 3:
+# Get index of the 'ascii' column 
+ascii_idx = header.index("asciiname")
+# Get index of the 'name' column
+name_idx = header.index("name")
+# Get index of the 'alternate names' column
+alt_names_idx = header.index("alternatenames")
+# Loop through all rows except the header 
+for row in rows[1:]: 
+    cells = row.split("\t")  # Split the row into individual cell values by tab     
+    # Skip the row if it's incomplete (e.g., missing required columns) 
+    if len(cells) <= max(ascii_idx, name_idx, alt_names_idx): 
         continue
+    # Extract and clean up the values for each relevant column 
+    ascii_name = cells[ascii_idx].strip()  # Primary name (used as dictionary key) 
+    name = cells[name_idx].strip()         # Official or canonical name 
+    alt_names = cells[alt_names_idx].strip()  # Comma-separated alternate name
+    # Split alternate names into a list, trimming spaces; fallback to empty list if blank 
+    alt_list = [n.strip() for n in alt_names.split(",")] if alt_names else [] 
+ 
+    # Combine all name variants into a set to remove duplicates 
+    name_variants = set([ascii_name, name] + alt_list) 
+ 
+    # Escape each name to safely include in regex (e.g., handles special characters like "." or "+") 
+    escaped_names = [re.escape(n) for n in name_variants if n] 
+ 
+    # Only proceed if there's at least one name to include 
+    if escaped_names: 
+        # Create a regex pattern that matches any of the name variants as whole words 
+        # \b ensures we only match complete words (not substrings) 
+        pattern = r"\b(?:{})\b".format("|".join(escaped_names)) 
+ 
+        # Compile the pattern with case-insensitive matching for flexibility in text 
+        patterns[ascii_name] = re.compile(pattern, re.IGNORECASE)
 
-    # Extract and clean up place names
-    ascii_name = columns[0].strip()  # Simple version of the place name
-    name = columns[1].strip()  # Full or official name of the place
-    alt_names = columns[2].strip()  # Alternate names as a comma-separated string
-
-    # Create a list of all names (official and alternate) for the place
-    alt_names_list = [alt.strip() for alt in alt_names.split(",") if alt.strip()]
-    all_names = [ascii_name, name] + alt_names_list
-
-    # Store the list of names in the dictionary using the ascii_name as the key
-    patterns[ascii_name] = all_names
-
-# code below this upto pattern_to_place[regex] = ascii_name has been generated with the help of ChatGPT see ChatGPT solution No.3 in AI documentation
-# Create regex patterns to search for each place name using the list of names
-pattern_to_place = {}
-
-# For each place in the patterns dictionary, create a regex pattern to match all its names
-for ascii_name, name_list in patterns.items():
-    # Combine the names into a single regex pattern (separated by "|")
-    regex = "|".join(re.escape(name) for name in name_list if name)
-    pattern_to_place[regex] = ascii_name
-
-# Creating a dictionary named frequency_counter to count total mentions of each place name
+# Creating a dictionary named frequency_counter to track the total mentions of each place name
 frequency_counter = {}
 
-# Creating a dictionary named mentions_per_month to count mentions of places per months
+# Creating a dictionary named mentions_per_month to track place name mentions by month
 mentions_per_month = {}
 
-# Processing each article to count mentions of places
+# Code from below up to line 118 has been generated with the help of ChatGPT (see ChatGPT Solution No.2 in AI documentation)
+# Looping through each article to count place name mentions
 for filename in os.listdir(articles_folder):
-    # Extract the date and month from the filename
-    file_date = filename[:10]  # Extract date like '2023-11-05'
-    file_month = file_date[:7]  # Extract month like '2023-11'
+    # Extracting the date and month from the filename (e.g., '2023-11-05' and '2023-11')
+    file_date = filename[:10]  
+    file_month = file_date[:7]
 
-    # Skip articles before the war started on 2023-10-07
+    # Skipping articles published before the Gaza war began (2023-10-07)
     if file_date < "2023-10-07":
         continue
 
-    # Open and read the article's content
+    # Opening and reading the content of the article
     file_path = os.path.join(articles_folder, filename)
     with open(file_path, encoding="utf-8") as f:
         text = f.read()
 
-    # code generated with the help of ChatGPT see ChatGPT solution No.4 in AI Documentation
-    # Set to keep track of places already counted in the current article
+    # Reset counted places for each new article
     already_counted_places = set()
 
-    # Search for each place name using the regex patterns
-    for regex, place in pattern_to_place.items():
-        # Skip if the place has already been counted in this article
+    # Loop through each compiled regex pattern and its corresponding place name
+    for place, regex in patterns.items():
+
+        # We only want to count each place **once per article**, 
+        # so if we've already counted this place in the current article, we skip it
         if place in already_counted_places:
             continue
 
-        # Use regex to find all occurrences of the place name in the article
-        matches = re.findall(rf"\b(?:{regex})\b", text, flags=re.IGNORECASE)
-        count = len(matches)  # Count how many times the place appears
+        # Use compiled regex to find all case-insensitive matches of the place name in the article's text
+        matches = regex.findall(text)
 
-        # If the place was mentioned, update the total and monthly counts
+        # Count how many times the place name appears in the article
+        count = len(matches)
+
+        # If the place was mentioned at least once in the article
         if count > 0:
-            # Update total frequency count for the place
+
+            # Update the total count of how many times this place has been mentioned across all articles
             frequency_counter[place] = frequency_counter.get(place, 0) + count
 
-            # Update mentions by month for the place
+            # If this is the first time the place is being added to the monthly dictionary, initialize it
             if place not in mentions_per_month:
                 mentions_per_month[place] = {}
 
+            # Update the count of mentions for this place in the current month
             mentions_per_month[place][file_month] = mentions_per_month[place].get(file_month, 0) + count
 
-            # Mark this place as counted in the current article
+            # Mark this place as already counted for this article so it's not double-counted
             already_counted_places.add(place)
 
-# code generated with the help of ChatGPT see ChatGPT solution No.2 and ChatGPT Solution No.6 in AI documentation
 # Output the frequency counts for each place and its monthly mentions
 for place in frequency_counter:
     total = frequency_counter[place]
@@ -131,7 +133,7 @@ for place in frequency_counter:
         for month, count in mentions_per_month.get(place, {}).items():
             if count > 0:
                 print(f"  Found {place} {count} times in {month}")
-# Code below have been generated with the help of chatGPT (see ChatGPT Solution No.7 in AI Documentation)
+
 # Create an empty list to store the rows we want to save
 # Each row will be a tuple: (placename, month, count)
 rows_to_write = []
