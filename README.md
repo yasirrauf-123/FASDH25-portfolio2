@@ -89,38 +89,22 @@ The NER approach offered more nuanced place recognition but demanded extensive p
 but each also presented critical limitations that need to be addressed in future applications, especially when dealing with sensitive topics and multilingual datasets.
 
 ## Places in the NER gazetteer for which we manually entered latitude and longitude
-Dahiyeh 
-Nairoukh 
-Shawawra 
-Shujayea 
-Alsaftawi 
-Almahatta 
-Alwalaja 
-Altanf 
-Alaqsa 
-Alkarama 
-Almawasi 
-Almughraqa 
-Almaghazi 
-Beruit 
-Almazraa 
-Pashias 
-Almazraa Asharqiya 
-Altawil 
-Alkhader 
-Aljiftlik 
-Sistanbaluchestan 
-Rmeish 
-Margaliot 
-Mazzeh 
-Alshifa 
-Bosniaherzegovina 
+Dahiyeh, Nairoukh, Shawawra, Shujayea, Alsaftawi, Almahatta, Alwalaja, Altanf, Alaqsa, Alkarama, Almawasi, Almughraqa, Almaghazi, Beruit, Almazraa, Pashias, Almazraa Asharqiya, Altawil, 
+Alkhader, Aljiftlik, Sistanbaluchestan, Rmeish, Margaliot, Mazzeh, Alshifa, Bosniaherzegovina 
 
 #  IMAGES OF OUR FINAL MAPS
 ## MAP GENERATED FROM REGEX COUNTS TSV FILE AND GEONAMES GAZETTER FILE
 ![Regex Map](./scripts/output/regex_map.png)
 ## MAP GENERATED FROM NER COUNTS TSV FILE AND NER GAZETTEER TSV FILE
 ![Regex Map](./scripts/output/NER_map.png)
+
+# REASONS BEHIND CHOOSING INTERACTIVE MAPPING STYLE
+For this project, we specifically chose an interactive animated map using Plotly Express because it allowed us to clearly visualize how the geographical focus of news articles shifted over time. 
+The size and color of each point represented the frequency of a place name’s occurrence, making it easy to identify hotspots of media attention in different months. We used an animated frame by 
+month to show temporal trends, which would not have been possible with a static map. This approach was particularly effective for comparing the outputs from the NER-based extraction and the 
+regex-based extraction. The interactivity—such as hover tooltips showing place names and counts—made the map more user-friendly and informative, especially for viewers who may not be familiar 
+with the region. We believe this style of mapping was the best fit for our Digital Humanities project because it combines both spatial and temporal analysis in a single, clear, and visually 
+engaging representation.
 
 # COMPARISON OF THE JANUARY 2024 MAPS GENERATED FROM THE REGEX AND NER DATA
 For the Regex map, we created an animated map based on months, and both maps are similar because they were both created as geo-scatter plots with hover functionality displaying counts, 
@@ -152,7 +136,12 @@ the deadline. Even though before deadlines it was also happening. In future, it 
 used.
 ## 5. Colab: 
 We faced issues with T4-GPU usage limits on Colab. Once our quota finished, the notebook took forever to run, and we couldn’t install Stanza on our laptops. If we had more time, we could have 
-looked for lighter tools that work better on limited resources.
+looked for lighter tools that work better on limited resources. 
+One major issue we faced during this project was the open access to all students’ Colab notebooks on the shared Drive. Towards the end of the project, we noticed that some students started 
+accessing our notebook without our permission and directly copy-pasted our code into their own submissions. This was disappointing, especially since we had put a lot of effort into our scripts 
+and documentation. Such situations undermine the collaborative spirit and fairness of the project. For future mini projects, we suggest assigning individual or group-specific folders with 
+restricted access, or using platforms like GitHub Classroom or Google Classroom where sharing can be controlled more securely. This would help protect original work and encourage genuine learning
+and contribution.
 
 
 
