@@ -5,7 +5,7 @@ from each article, map them, and observe how the geographic focus of the news sh
 expressions and a gazetteer to a dataset of 4341 Al Jazeera English articles about the Gaza war, collected by
 Inacio Vieira. Although the dataset includes older articles, we use a condition to skip those published before
 the current war (starting November 2023), as our focus is on mapping how the geographic focus of news articles has shifted
-since the start of the ongoing conflict.
+since the start of the ongoing conflict in Gaza.
 """
 
 # Importing the regex library to extract place names from text using regular expressions
@@ -25,7 +25,7 @@ articles_folder = "../articles"
 with open(gazetteer_path, encoding="utf-8") as file:
     data = file.read()  # Reading the entire content of the gazetteer file
 
-# Code from below up to line 66 has been generated with the help of ChatGPT (ChatGPT Solution No.1 in AI Documentation Document)
+# Code from below up to line 66 has been fixed with the help of ChatGPT (ChatGPT Solution No.1 in AI Documentation Document)
 # Creating Dictionary to store regex patterns for each place (keyed by ascii name)
 patterns = {}
 # Split the gazetteer file into rows using newline as the separator
@@ -72,10 +72,10 @@ frequency_counter = {}
 # Creating a dictionary named mentions_per_month to track place name mentions by month
 mentions_per_month = {}
 
-# Code from below up to line 118 has been generated with the help of ChatGPT (see ChatGPT Solution No.2 in AI documentation)
+# Code from below up to line 118 has been fixed with the help of ChatGPT (see ChatGPT Solution No.2 in AI documentation)
 # Looping through each article to count place name mentions
 for filename in os.listdir(articles_folder):
-    # Extracting the date and month from the filename (e.g., '2023-11-05' and '2023-11')
+    # Extracting the date and month from the filename 
     file_date = filename[:10]  
     file_month = file_date[:7]
 
@@ -89,9 +89,11 @@ for filename in os.listdir(articles_folder):
         text = f.read()
 
     # Reset counted places for each new article
+    # Code below have been fixed with the help of ChatGPT (see ChatGPT solution No.4 in AI documentation)
     already_counted_places = set()
 
     # Loop through each compiled regex pattern and its corresponding place name
+    # Code below have been fixed with the help of ChatGPT (see ChatGPT Solution No.3 in AI documentation)
     for place, regex in patterns.items():
 
         # We only want to count each place **once per article**, 
@@ -100,6 +102,7 @@ for filename in os.listdir(articles_folder):
             continue
 
         # Use compiled regex to find all case-insensitive matches of the place name in the article's text
+        # Code below have been fixed with the helped with the help of ChatGPT (See ChatGPT Solution No.5 in AI documentation)
         matches = regex.findall(text)
 
         # Count how many times the place name appears in the article
@@ -121,7 +124,8 @@ for filename in os.listdir(articles_folder):
             # Mark this place as already counted for this article so it's not double-counted
             already_counted_places.add(place)
 
-# Output the frequency counts for each place and its monthly mentions
+# Printing the frequency counts for each place and its monthly mentions to check whether our run whether our script has ran properly
+# Code below was self written and then was fixed with the help of ChatGPT (See ChatGPT Solution No.6)
 for place in frequency_counter:
     total = frequency_counter[place]
 
@@ -135,6 +139,7 @@ for place in frequency_counter:
                 print(f"  Found {place} {count} times in {month}")
 
 # Create an empty list to store the rows we want to save
+# Code below have been written and fixed with the help of ChatGPT (see ChatGPT Solution No.7 in AI Documentation)
 # Each row will be a tuple: (placename, month, count)
 rows_to_write = []
 
@@ -145,7 +150,7 @@ for place, month_data in mentions_per_month.items():
     for month, count in month_data.items():
         
         # Only include data where the mention count is greater than zero
-        # This filters out months where a place wasn't mentioned
+        # This filters out months where a place wasn't mentioned- we are doing this for sanity check
         if count > 0:
             # Add a tuple with the place name, month, and count to the list
             rows_to_write.append((place, month, count))
@@ -154,7 +159,7 @@ for place, month_data in mentions_per_month.items():
 # The DataFrame will have three columns: placename, month, and count
 df = pd.DataFrame(rows_to_write, columns=["placename", "month", "count"])
 
-# Save the DataFrame as a .tsv (tab-separated values) file
+# Save the DataFrame as a .tsv (tab-separated values) file which we laterly use for mapping 
 # sep="\t" means values will be separated by tabs
 # index=False means we don't want to write row numbers to the file
 df.to_csv("regex_counts.tsv", sep="\t", index=False)
