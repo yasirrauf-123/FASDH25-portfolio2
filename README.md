@@ -37,26 +37,26 @@ differences and alternate names — in computer science language: the recall was
 each row in the gazetteer that matches not only the asciiname but also any of the alternative names listed in the other columns. This makes the script better at 
 identifying place names from the gazetteer in the text and improves overall recall. The output of this script is saved in the form of a TSV file named regex_counts 
 containing three columns: placename, month, and count, which we have stored in our data folder which we will further use for mapping.
-##2. Gaza_NER2_yasir_afreen_bushra
+## 2. Gaza_NER2_yasir_afreen_bushra
 In this Colab notebook, we use Named Entity Recognition (NER), a Natural Language Processing (NLP) technique, to identify place names in a dataset of 4341 Al Jazeera 
 English articles about the Gaza war, compiled by Inacio Vieira. While the dataset contains articles from various dates, we apply a filter to include only those published 
 in January 2024, as instructed, focusing specifically on extracting place names from that month. To improve the accuracy and consistency of the place names, we also perform 
 cleaning through the process of normalization, which we learned in class. This step ensures that variations in place name formats or spellings are standardized for better
 matching. The output, containing the identified and cleaned place names, is saved in the form of a TSV file called ner_counts conataining two columns named pplacename and 
 count, which we store in the data folder within the script directory for further use and analysis.
-##3. build_gazetteer
+## 3. build_gazetteer
 In the notebook titled Gaza_NER2_yasir_afreen_bushra, which is a part of our Mini Project No. 2 portfolio, we applied Named Entity Recognition (NER), a Natural Language 
 Processing (NLP) technique, to identify place names in a dataset of 4341 Al Jazeera English articles about the Gaza war, compiled by Inacio Vieira. Although the dataset 
 includes articles from various dates, we applied a filter to include only those published in January 2024, as instructed. Our focus was to extract place names specifically 
 from that month.We stored the places we found using NER in a TSV file named ner_counts.tsv, which is also part of our Mini Project No. 2 portfolio. Now, in this Colab notebook,
 we will apply geocoding to find coordinates for those places and save them in a TSV file named NER_Gazetteer.tsv, which we will later use for mapping purposes.
-##4.yasir_afreen_bushra_NER_mapping_script
+## 4.yasir_afreen_bushra_NER_mapping_script
 In this script, we use the output generated from the Gaza_NER2_yasir_afreen_bushra collab notebook (a .tsv file containing the monthly count of places)
 and the NER_gazetteer from the build_gazetteer collab notebook of our mini project No. 2. We merge these files because the NER_counts
 file does not contain coordinates, which are essential for mapping, while the NER_gazetteer file provides the geographic
 coordinates for these places. By merging the datasets, we combine the place counts with their respective geographic coordinates, enabling us to map the locations 
 using Panda and Plotly express.
-##5. yasir_afreen_bushra_regex_mapping_script
+## 5. yasir_afreen_bushra_regex_mapping_script
 In this script, we use the output generated from the regex_script_final file (a .tsv file containing the monthly count of places)
 and the geoname_gaza_selections file from the gazetteer folder of our mini project No. 2. We merge these files because the regex_counts
 file does not contain coordinates, which are essential for mapping, while the geoname_gaza_selections file provides the geographic
