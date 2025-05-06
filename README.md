@@ -143,14 +143,14 @@ which made our output fragmented. If we had more time, we could have figured out
 Even after we did cleaning and normalization, there were still issues. For example, Israel Goren was counted as one place just because two places were written together. Also, Gaza and Gazas 
 still showed different counts after cleaning. Some places didn’t geocode properly either—like Red Sea appeared in America on the map. We had to manually search coordinates for some places. 
 If we had more time, we could have double-checked coordinates and added extra layers of cleaning to improve accuracy.
-##3. GitHub Issues: 
+## 3. GitHub Issues: 
 Some group members faced problems in committing after forking the repo. We tried fixing it, sometimes it worked, sometimes it didn’t. So, Yasir had to commit most of the changes, which is 
 why you’ll see more commits from his GitHub and fewer from Afreen and Bushra. If we had more time we could have figured what might be the issue be.
-##4. Project Management:
+## 4. Project Management:
 Trello crashed multiple times, and we were logged out while checking the comments where group members had tagged us. We think it might be because a lot of people were using Trello close to 
 the deadline. Even though before deadlines it was also happening. In future, it would be better if we could use another project management tool like Notion which few of group members have already 
 used.
-##5. Colab: 
+## 5. Colab: 
 We faced issues with T4-GPU usage limits on Colab. Once our quota finished, the notebook took forever to run, and we couldn’t install Stanza on our laptops. If we had more time, we could have 
 looked for lighter tools that work better on limited resources.
 
