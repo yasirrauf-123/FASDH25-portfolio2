@@ -11,11 +11,16 @@ coordinates for these places. By merging the datasets, we combine the place coun
 
 # Help was taken from ChatGPT and mapping slides presentation to draft the comments and code (See ChatGPT Solution No. 12 in AI Documentation)
 # Import required libraries
+# Import required libraries
+import os  # For creating output directories if they don't exist
 import pandas as pd  # Import pandas for data manipulation and analysis
 import plotly.express as px  # Import plotly.express for creating interactive plots
 
-# Load data from CSV files
-counts = pd.read_csv("../scripts/regex_counts.tsv", sep="\t")  # Load the regex counts data
+# Ensure the output directory exists
+os.makedirs("../scripts/output", exist_ok=True)
+
+# Load data from TSV files
+counts = pd.read_csv("../scripts/data/regex_counts.tsv", sep="\t")  # Load the regex counts data
 coords = pd.read_csv("../gazetteers/geonames_gaza_selection.tsv", sep="\t")  # Load the geographical coordinates data
 
 # Rename columns for consistency to match the columns in the counts dataset
@@ -49,6 +54,11 @@ fig = px.scatter_map(  # Create a scatter map with Plotly Express
 fig.write_html("regex_map.html")  # Save the interactive map as an HTML file
 fig.write_image("regex_map.png")  # Save the map as a PNG image
 
+fig.write_html("../scripts/output/regex_map.html")  # Save in output folder inside scripts
+fig.write_image("../scripts/output/regex_map.png")  # Save in output folder inside scripts
+
 # Display the map
 fig.show()  # Show the interactive map in the notebook
+
+
 

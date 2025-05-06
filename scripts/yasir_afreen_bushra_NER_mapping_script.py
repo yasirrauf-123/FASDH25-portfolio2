@@ -11,12 +11,16 @@ coordinates for these places. By merging the datasets, we combine the place coun
 
 # Help was taken from ChatGPT and mapping presentation slides to come up with this code (see ChatGPT Solution No.13 in AI Documentation)
 # Importing necessary libraries for data manipulation and plotting
+import os
 import pandas as pd
 import plotly.express as px
 
+# Ensure the output directory exists
+os.makedirs("../scripts/output", exist_ok=True)
+
 # Loading the NER counts and geographic data from TSV files
-counts = pd.read_csv("../scripts/ner_counts.tsv", sep="\t")
-coords = pd.read_csv("../scripts/NER_gazetteer.tsv", sep="\t")
+counts = pd.read_csv("../scripts/data/ner_counts.tsv", sep="\t")
+coords = pd.read_csv("../scripts/data/NER_gazetteer.tsv", sep="\t")
 
 # Renaming columns in coords to match the ones in counts for easier merging
 coords = coords.rename(columns={
@@ -46,6 +50,10 @@ fig = px.scatter_map(
 # Saving the map as an interactive HTML file and static PNG image
 fig.write_html("NER_map.html")
 fig.write_image("NER_map.png")
+
+# Saving the map in the output folder
+fig.write_html("../scripts/output/NER_map.html")  # Save HTML
+fig.write_image("../scripts/output/NER_map.png")  # Save PNG
 
 # Displaying the map
 fig.show()

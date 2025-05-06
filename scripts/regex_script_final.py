@@ -159,7 +159,6 @@ for place, month_data in mentions_per_month.items():
 # The DataFrame will have three columns: placename, month, and count
 df = pd.DataFrame(rows_to_write, columns=["placename", "month", "count"])
 
-# Save the DataFrame as a .tsv (tab-separated values) file which we laterly use for mapping 
-# sep="\t" means values will be separated by tabs
-# index=False means we don't want to write row numbers to the file
-df.to_csv("regex_counts.tsv", sep="\t", index=False)
+# Create a DataFrame and save it to a TSV file for later mapping
+df = pd.DataFrame(rows_to_write, columns=["placename", "month", "count"])
+df.to_csv("../scripts/data/regex_counts.tsv", sep="\t", index=False)
